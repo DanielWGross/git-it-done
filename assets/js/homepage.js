@@ -1,6 +1,8 @@
 const userFormEl = document.querySelector("#user-form");
 const nameInputEl = document.querySelector("#username");
 
+const isEmpty = (arr) => !Array.isArray(arr) || arr.length === 0;
+
 const formSubmitHandler = (event) => {
   event.preventDefault();
   const username = nameInputEl.value.trim();
@@ -18,6 +20,11 @@ const displayRepos = (repos, searchTerm) => {
   const repoContainerEl = document.querySelector("#repos-container");
   repoContainerEl.textContent = "";
   repoSearchTerm.textContent = searchTerm;
+
+  if (isEmpty(repos)) {
+    repoContainerEl.textContent = "No repositories found.";
+    return;
+  }
 
   repos.forEach((repo) => {
     const repoName = `${repo.owner.login}/${repo.name} `;
@@ -43,9 +50,15 @@ const displayRepos = (repos, searchTerm) => {
 };
 
 const getUserRepos = async (user) => {
-  const response = await fetch(`https://api.github.com/users/${user}/repos`);
-  const data = await response.json();
-  displayRepos(data, user);
+  const response = await fetch(
+    `https://api5635.github.com/users/${user}/repos`
+  ).catch(() => alert("Unable to connect GitHub"));
+  if (response.ok) {
+    const data = await response.json();
+    displayRepos(data, user);
+  } else {
+    alert(`Error: ${response.statusText}`);
+  }
 };
 
 userFormEl.addEventListener("submit", formSubmitHandler);
