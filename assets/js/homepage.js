@@ -29,7 +29,8 @@ const displayRepos = (repos, searchTerm) => {
   repos.forEach((repo) => {
     const repoName = `${repo.owner.login}/${repo.name} `;
 
-    const repoEl = document.createElement("div");
+    const repoEl = document.createElement("a");
+    repoEl.setAttribute("href", `./single-repo.html?repo=${repoName}`);
     repoEl.classList = "list-item flex-row justify-space-between align-center";
 
     const titleEl = document.createElement("span");
@@ -50,9 +51,11 @@ const displayRepos = (repos, searchTerm) => {
 };
 
 const getUserRepos = async (user) => {
-  const response = await fetch(
-    `https://api5635.github.com/users/${user}/repos`
-  ).catch(() => alert("Unable to connect GitHub"));
+  //   const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+  const targetUrl = `https://api.github.com/users/${user}/repos`;
+  const response = await fetch(targetUrl).catch(() =>
+    alert("Unable to connect GitHub")
+  );
   if (response.ok) {
     const data = await response.json();
     displayRepos(data, user);
