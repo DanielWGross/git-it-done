@@ -79,6 +79,4 @@ const getFeaturedRepos = async (language) => {
   }
 };
 
-getFeaturedRepos("javascript");
-
 userFormEl.addEventListener("submit", formSubmitHandler);
