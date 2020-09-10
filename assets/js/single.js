@@ -13,7 +13,7 @@ const getRepoIssues = async (repo) => {
       displayWarning(repo);
     }
   } else {
-    alert(`Error: ${response.statusText}`);
+    location.replace("./index.html");
   }
 };
 
@@ -58,8 +58,12 @@ const getRepoName = () => {
   const repoNameEl = document.querySelector("#repo-name");
   let params = new URLSearchParams(document.location.search);
   const repoName = params.get("repo");
-  repoNameEl.textContent = repoName;
-  return repoName;
+  if (repoName) {
+    repoNameEl.textContent = repoName;
+    getRepoIssues(repoName);
+  } else {
+    location.replace("./index.html");
+  }
 };
 
-getRepoIssues(getRepoName());
+getRepoName();
