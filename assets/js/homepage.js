@@ -64,4 +64,12 @@ const getUserRepos = async (user) => {
   }
 };
 
+const getFeaturedRepos = async (language) => {
+  const targetUrl = `https://api.github.com/search/repositories?q=${language}+is:featured&sort=help-wanted-issues`;
+
+  fetch(targetUrl);
+};
+
+getFeaturedRepos("javascript");
+
 userFormEl.addEventListener("submit", formSubmitHandler);
