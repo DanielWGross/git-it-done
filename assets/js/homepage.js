@@ -67,7 +67,16 @@ const getUserRepos = async (user) => {
 const getFeaturedRepos = async (language) => {
   const targetUrl = `https://api.github.com/search/repositories?q=${language}+is:featured&sort=help-wanted-issues`;
 
-  fetch(targetUrl);
+  const response = await fetch(targetUrl).catch(() =>
+    alert("Unable to connect to GitHub")
+  );
+  if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    displayRepos(data.items, language);
+  } else {
+    alert("Error: " + response.statusText);
+  }
 };
 
 getFeaturedRepos("javascript");
