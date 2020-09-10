@@ -1,5 +1,7 @@
 const userFormEl = document.querySelector("#user-form");
 const nameInputEl = document.querySelector("#username");
+const languageButtonsEl = document.querySelector("#language-buttons");
+const repoContainerEl = document.querySelector("#repos-container");
 
 const isEmpty = (arr) => !Array.isArray(arr) || arr.length === 0;
 
@@ -17,7 +19,6 @@ const formSubmitHandler = (event) => {
 
 const displayRepos = (repos, searchTerm) => {
   const repoSearchTerm = document.querySelector("#repo-search-term");
-  const repoContainerEl = document.querySelector("#repos-container");
   repoContainerEl.textContent = "";
   repoSearchTerm.textContent = searchTerm;
 
@@ -72,11 +73,18 @@ const getFeaturedRepos = async (language) => {
   );
   if (response.ok) {
     const data = await response.json();
-    console.log(data);
     displayRepos(data.items, language);
   } else {
     alert("Error: " + response.statusText);
   }
 };
+
+languageButtonsEl.addEventListener("click", (event) => {
+  const language = event.target.dataset.language;
+  if (language) {
+    repoContainerEl.textContent = "";
+    getFeaturedRepos(language);
+  }
+});
 
 userFormEl.addEventListener("submit", formSubmitHandler);
