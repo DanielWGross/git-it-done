@@ -54,4 +54,12 @@ const displayWarning = (repo) => {
   limitWarningEl.appendChild(linkEl);
 };
 
-getRepoIssues("angular/angular");
+const getRepoName = () => {
+  const repoNameEl = document.querySelector("#repo-name");
+  let params = new URLSearchParams(document.location.search);
+  const repoName = params.get("repo");
+  repoNameEl.textContent = repoName;
+  return repoName;
+};
+
+getRepoIssues(getRepoName());
