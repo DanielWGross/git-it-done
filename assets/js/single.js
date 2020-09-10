@@ -8,6 +8,10 @@ const getRepoIssues = async (repo) => {
   if (response.ok) {
     const data = await response.json();
     displayIssues(data);
+
+    if (response.headers.get("Link")) {
+      displayWarning(repo);
+    }
   } else {
     alert(`Error: ${response.statusText}`);
   }
@@ -40,4 +44,14 @@ const displayIssues = (issues) => {
   });
 };
 
-getRepoIssues("DanielWGross/run-buddy");
+const displayWarning = (repo) => {
+  const limitWarningEl = document.querySelector("#limit-warning");
+  limitWarningEl.textContent = "To see more than 30 issues, visit ";
+  const linkEl = document.createElement("a");
+  linkEl.textContent = "See More Issues on GitHub.com";
+  linkEl.setAttribute("href", "https://github.com/" + repo + "/issues");
+  linkEl.setAttribute("target", "_blank");
+  limitWarningEl.appendChild(linkEl);
+};
+
+getRepoIssues("angular/angular");
